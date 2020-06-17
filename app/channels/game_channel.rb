@@ -1,7 +1,9 @@
 class GameChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "games"
-    ActionCable.server.broadcast("games", {games: Game.all})
+    binding.pry
+    key = Player.game_id(params[:id])
+    stream_from key
+    ActionCable.server.broadcast(key, {players: Player.for_game(params[:id])})
   end
 
   def unsubscribed

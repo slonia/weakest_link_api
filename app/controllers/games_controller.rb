@@ -2,13 +2,15 @@ class GamesController < ApplicationController
   def create
     Game.create(params[:id])
     broadcast_games
-    render json: {status: :ok}
+    render json: {status: :ok, game: params[:id]}
   end
 
   def join
-    players = redis.rpush(params[:id], params[:player])
+    key = Player.game_id(params[:id])
+    Player.add_to_game(params[:id], SecureRandom.uuid)
     broadcast_games
-    render json: {status: :ok, players: players}
+    ActionCable.server.broadcast(key, {players: Player.for_game(params[:id])})
+    render json: {status: :ok}
   end
 
   def show

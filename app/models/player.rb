@@ -1,11 +1,15 @@
-class Game < ApplicationRecord
+class Player < ApplicationRecord
   class<<self
     def for_game(id)
-      redis.lrange(key(id), 0, redis.llen(key(id)))
+      redis.lrange(game_id(id), 0, redis.llen(game_id(id)))
     end
 
     def add_to_game(id, player)
-      redis.rpush(key(id), player)
+      redis.rpush(game_id(id), player)
+    end
+
+    def game_id(id)
+      "game_#{id}"
     end
 
     private
@@ -14,8 +18,5 @@ class Game < ApplicationRecord
       @redis ||= Redis.new
     end
 
-    def key(id)
-      "game_#{id}"
-    end
   end
 end
