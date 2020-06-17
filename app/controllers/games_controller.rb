@@ -1,21 +1,13 @@
 class GamesController < ApplicationController
-  def index
-    begin
-      games = redis.lrange('games', 0, redis.llen('games'))
-      render json: {status: :ok, games: games}
-    end
-  end
-
   def create
-    games = redis.rpush('games', params[:id])
-    redis.rpush(params[:id], 'author')
-    ActionCable.server.broadcast("games", {message: "hello ws"})
-    render json: {status: :ok, games: games}
+    Game.create(params[:id])
+    broadcast_games
+    render json: {status: :ok}
   end
 
   def join
     players = redis.rpush(params[:id], params[:player])
-    ActionCable.server.broadcast("games", {message: "hello ws", players: players})
+    broadcast_games
     render json: {status: :ok, players: players}
   end
 
@@ -26,7 +18,8 @@ class GamesController < ApplicationController
 
   private
 
-    def redis
-      @redis ||= Redis.new
+    def broadcast_games
+      ActionCable.server.broadcast("games", {games: Game.all})
     end
+
 end
