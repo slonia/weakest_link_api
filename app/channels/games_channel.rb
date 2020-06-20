@@ -1,7 +1,7 @@
 class GamesChannel < ApplicationCable::Channel
   def subscribed
     stream_from "games"
-    ActionCable.server.broadcast("games", {games: Game.all})
+    ActionCable.server.broadcast("games", {games: Game.pluck(:uuid)})
   end
 
   def unsubscribed

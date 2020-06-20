@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uuid: MyString
+  game: one
+  name: MyString
+
+two:
+  uuid: MyString
+  game: two
+  name: MyString
