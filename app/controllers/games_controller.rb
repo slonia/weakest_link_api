@@ -11,7 +11,7 @@ class GamesController < ApplicationController
     if !@game.players.pluck(:name).include?(params[:name])
       @player = Player.create(name: params[:name], role: :player, game_id: @game.id)
     end
-    ActionCable.server.broadcast("game_#{@game.uuid}", {players: @game.players.pluck(:name)})
+    ActionCable.server.broadcast("game_#{@game.uuid}", {players: @game.players.regular.pluck(:name)})
     render json: { game: @game, players: @game.players}
   end
 
