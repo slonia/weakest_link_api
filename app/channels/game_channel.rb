@@ -3,7 +3,13 @@ class GameChannel < ApplicationCable::Channel
     key = "game_" + params[:id]
     game = Game.find_by(uuid: params[:id])
     stream_from key
-    ActionCable.server.broadcast(key, {players: game.players.regular.pluck(:name)})
+    ActionCable.server.broadcast(key, {event: "player_joined", data: {players: game.players.regular.pluck(:name)}})
+  end
+
+  def receive(data)
+    key = "game_" + params[:id]
+    game = Game.find_by(uuid: params[:id])
+    ActionCable.server.broadcast(key, data)
   end
 
   def unsubscribed
