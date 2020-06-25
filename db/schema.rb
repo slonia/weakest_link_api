@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_19_201906) do
+ActiveRecord::Schema.define(version: 2020_06_25_175313) do
+
+  create_table "bunches", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "games", force: :cascade do |t|
     t.string "uuid"
@@ -29,5 +35,16 @@ ActiveRecord::Schema.define(version: 2020_06_19_201906) do
     t.index ["game_id"], name: "index_players_on_game_id"
   end
 
+  create_table "questions", force: :cascade do |t|
+    t.text "text", null: false
+    t.string "answer"
+    t.boolean "shared", default: true, null: false
+    t.integer "bunch_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bunch_id"], name: "index_questions_on_bunch_id"
+  end
+
   add_foreign_key "players", "games"
+  add_foreign_key "questions", "bunches"
 end

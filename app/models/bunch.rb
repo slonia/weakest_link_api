@@ -1,0 +1,2 @@
+class Bunch < ApplicationRecord
+end
