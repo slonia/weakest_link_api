@@ -4,7 +4,7 @@ class CreateQuestions < ActiveRecord::Migration[6.0]
       t.text :text, null: false
       t.string :answer
       t.boolean :shared, null: false, default: true
-      t.references :bunch, null: false, foreign_key: true
+      t.references :bunch, null: true, foreign_key: true
 
       t.timestamps
     end

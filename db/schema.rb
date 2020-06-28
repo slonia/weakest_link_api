@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 2020_06_25_175313) do
     t.text "text", null: false
     t.string "answer"
     t.boolean "shared", default: true, null: false
-    t.integer "bunch_id", null: false
+    t.integer "bunch_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["bunch_id"], name: "index_questions_on_bunch_id"
