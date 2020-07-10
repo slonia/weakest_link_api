@@ -9,6 +9,11 @@ class GameChannel < ApplicationCable::Channel
   def receive(data)
     key = "game_" + params[:id]
     game = Game.find_by(uuid: params[:id])
+    if data['event'] == 'question'
+      question = Question.order("RANDOM()").last
+      data['question'] = question.text
+      data['answer'] = question.answer
+    end
     ActionCable.server.broadcast(key, data)
   end
 
